@@ -60,8 +60,8 @@ public class GameField extends JFrame implements ActionListener{
 		log("button start clicked. Race is about ot begin.");
 		Thread hare, turtle;
 		
-		hare 	= new Thread(new Player("Hare", this::log, this::updatePositions, race, new HarePositionCalculator()));
-		turtle 	= new Thread(new Player("Turtle", this::log, this::updatePositions, race, new TurtlePositionCalculator()));
+		hare 	= new Thread(new Player("Hare", this::log, this::updatePositions, this.race, new HarePositionCalculator()));
+		turtle 	= new Thread(new Player("Turtle", this::log, this::updatePositions, this.race, new TurtlePositionCalculator()));
 		
 		hare.start();
 		turtle.start();
@@ -81,7 +81,6 @@ public class GameField extends JFrame implements ActionListener{
 	}
 
 	public void updatePositions(Player player) {
-		
 		AnimationPane currentplayer = turtle;
 		
 		if (player.getName().equals("Hare")){
