@@ -6,37 +6,31 @@ public class Player implements Runnable{
 	private static boolean gameOver;
 	private int position = 1;
 	private String name;
-	private GameField game;
 	public NextPositioncalculator calculator;
 	private Consumer<String> logConsumer = null;
+	private Consumer<Player> positionUpdater = null;
+	private Race race = null;
 	
-	public Player(String name, GameField game, NextPositioncalculator calc){
+	public Player(String name, Consumer<String> logger, Consumer<Player> positioner, Race race, NextPositioncalculator calc){
 		this.name = name;
-		this.game = game;
-		this.calculator = calc;
-		gameOver = false;
-	}
-	
-	public Player(String name, Consumer<String> logger, GameField game, NextPositioncalculator calc){
-		this.name = name;
-		this.game = game;
 		this.calculator = calc;
 		this.logConsumer = logger;
+		this.positionUpdater = positioner;
+		this.race = race;
 		gameOver = false;
 	}
-
 	
 	@Override
 	public void run() {
 		int offset;
 		try {
 			logConsumer.accept(name + " position is " + position);
-			game.race.prepare(this);
+			race.prepare(this);
 			while (position < 50){
 				if (gameOver){
 					break;
 				}
-				game.race.getMove(this);
+				race.getMove(this);
 				offset = getNextOffset();
 				position += offset;
 				if (position < 1){
@@ -44,9 +38,10 @@ public class Player implements Runnable{
 				}
 				
 				logConsumer.accept(name + " position = " + position + "; The move result: " + offset);
-				game.updatePositions(this);
+				positionUpdater.accept(this);
+				
 			}
-			if (game.race.finish() == 1){ 
+			if (race.finish() == 1){ 
 				gameOver = true;
 				logConsumer.accept(name + " wins!");
 			}

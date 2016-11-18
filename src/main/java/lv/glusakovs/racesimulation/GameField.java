@@ -51,7 +51,7 @@ public class GameField extends JFrame implements ActionListener{
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
+	public void actionPerformed(ActionEvent e) {
 		if (race.getRaceStatus() ){
 			log ("race in progress. Please wait");
 			return;
@@ -60,8 +60,8 @@ public class GameField extends JFrame implements ActionListener{
 		log("button start clicked. Race is about ot begin.");
 		Thread hare, turtle;
 		
-		hare 	= new Thread(new Player("Hare", this::log, this, new HarePositionCalculator()));
-		turtle 	= new Thread(new Player("Turtle", this::log, this, new TurtlePositionCalculator()));
+		hare 	= new Thread(new Player("Hare", this::log, this::updatePositions, race, new HarePositionCalculator()));
+		turtle 	= new Thread(new Player("Turtle", this::log, this::updatePositions, race, new TurtlePositionCalculator()));
 		
 		hare.start();
 		turtle.start();
@@ -69,8 +69,8 @@ public class GameField extends JFrame implements ActionListener{
 		log("just 1 sec before race start");
 		try {
 			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		} catch (InterruptedException ex) {
+			ex.printStackTrace();
 		}
 		
 		race.startRace();
