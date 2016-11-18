@@ -1,6 +1,5 @@
 package lv.glusakovs.racesimulation;
 
-
 public class Player implements Runnable{
 	private static boolean gameOver;
 	private int position = 1;

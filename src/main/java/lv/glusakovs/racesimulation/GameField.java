@@ -15,8 +15,8 @@ public class GameField extends JFrame implements ActionListener{
 	private JTextArea textField;
 	private JScrollPane jp;
 	public Race race = new Race(300);
-	AnimationPane turtle;
-	AnimationPane hare;
+	private AnimationPane turtle;
+	private AnimationPane hare;
 	
 	
 	public GameField(){
