@@ -1,4 +1,4 @@
-package racesimulation;
+package lv.glusakovs.racesimulation;
 
 public class App {
 

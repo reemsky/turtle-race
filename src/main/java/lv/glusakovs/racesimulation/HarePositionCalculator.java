@@ -1,4 +1,4 @@
-package racesimulation;
+package lv.glusakovs.racesimulation;
 
 import java.util.Random;
 
