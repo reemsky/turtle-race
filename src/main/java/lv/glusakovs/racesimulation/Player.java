@@ -1,16 +1,27 @@
 package lv.glusakovs.racesimulation;
 
+import java.util.function.Consumer;
+
 public class Player implements Runnable{
 	private static boolean gameOver;
 	private int position = 1;
 	private String name;
 	private GameField game;
 	public NextPositioncalculator calculator;
+	private Consumer<String> logConsumer = null;
 	
 	public Player(String name, GameField game, NextPositioncalculator calc){
 		this.name = name;
 		this.game = game;
 		this.calculator = calc;
+		gameOver = false;
+	}
+	
+	public Player(String name, Consumer<String> logger, GameField game, NextPositioncalculator calc){
+		this.name = name;
+		this.game = game;
+		this.calculator = calc;
+		this.logConsumer = logger;
 		gameOver = false;
 	}
 
@@ -19,7 +30,7 @@ public class Player implements Runnable{
 	public void run() {
 		int offset;
 		try {
-			game.log(name + " position is " + position);
+			logConsumer.accept(name + " position is " + position);
 			game.race.prepare(this);
 			while (position < 50){
 				if (gameOver){
@@ -32,15 +43,15 @@ public class Player implements Runnable{
 					position = 1;
 				}
 				
-				game.log(name + " position = " + position + "; The move result: " + offset);
+				logConsumer.accept(name + " position = " + position + "; The move result: " + offset);
 				game.updatePositions(this);
 			}
 			if (game.race.finish() == 1){ 
 				gameOver = true;
-				game.log(name + " wins!");
+				logConsumer.accept(name + " wins!");
 			}
 			else {
-				game.log(name + " is second!");
+				logConsumer.accept(name + " is second!");
 			}
 			
 		} catch (InterruptedException e) {
